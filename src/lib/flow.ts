@@ -1,5 +1,10 @@
 import { loadBlock } from './registry';
 
+/**
+ * Initialize a flow by loading all blocks.
+ *
+ * @param flow
+ */
 function initFlow(flow: Flow): LoadedFlow | Error {
     const newFlow = flow.map((block): LoadedFlowBlock => {
         return Object.assign({}, block, {run: loadBlock(block.blockName)?.run});
@@ -17,9 +22,11 @@ export async function run(subject: GenericObject, config: Flow): Promise<Generic
     if (loadedFlow instanceof Error) {
         return loadedFlow;
     }
-    loadedFlow.forEach(async (block) => {
-        subject = await runBlock(subject, block);
-    });
+
+    for (let i = 0; i < loadedFlow.length; i++) {
+        subject = await runBlock(subject, loadedFlow[i]);
+    }
+
     return subject;
 }
 
