@@ -1,2 +1,2 @@
-export * from './lib/async';
-export * from './lib/number';
+export * as Registry from './lib/registry';
+export * as Flow from './lib/flow';
